@@ -9,6 +9,6 @@ from .....model.user import User
 
 router = APIRouter()
 
-@router.get("/testing_like",tags=["Post Comments"])
-async def test_api():
-    return {"Testing":"Done"}
+# @router.get("/testing_like",tags=["Post Comments"])
+# async def test_api():
+#     return {"Testing":"Done"}

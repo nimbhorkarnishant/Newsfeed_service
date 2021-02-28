@@ -16,7 +16,7 @@ router = APIRouter()
 
 
 
-@router.post("/like/{post_id}",tags=["Post Likes"])
+@router.put("/like/{post_id}",tags=["Post Likes"])
 async def Like(post_id:str,user_data:User,db: AsyncIOMotorClient = Depends(get_database)):
     data=await add_like_db(db,post_id,jsonable_encoder(user_data),1,"$push")
     if (data):
