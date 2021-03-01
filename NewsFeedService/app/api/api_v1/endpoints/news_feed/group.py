@@ -24,7 +24,7 @@ async def Update_group(post_id:str,group_data:group,db: AsyncIOMotorClient = Dep
     
         
 @router.delete("/delete_group/{post_id}",tags=["Group"])
-async def Update_group(post_id:str,db: AsyncIOMotorClient = Depends(get_database)):
+async def Delete_group(post_id:str,db: AsyncIOMotorClient = Depends(get_database)):
     try:
         data=await delete_group_db(db,post_id)
         if (data):

@@ -22,7 +22,7 @@ Post_data=[
     "firstName": "Sam",
     "lastName": "Willings"
   },
-  "isLiked": false,
+  "isLiked": False,
   "createdAt": "2021-03-01T06:47:30.197Z",
   "group": {
     "id": "1",
