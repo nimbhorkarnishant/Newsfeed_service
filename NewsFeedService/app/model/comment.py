@@ -1,21 +1,25 @@
 from typing import Optional
 from fastapi import FastAPI
 from pydantic import BaseModel,Field
-from uuid import UUID
 from datetime import datetime, time, timedelta
+from .user import User 
+
 
 class replies(BaseModel):
-    commentId:str
     isLiked:bool
-    user:dict={}
+    user:User
     comment:str
     createdAt:datetime
     
 class comment(BaseModel):
-    commentId:UUID
     isLiked:bool
-    user:dict={}
+    user:User
     comment:str
     createdAt:datetime
     replies:list=[]
     
+class comment_delete_model(BaseModel):
+    id:str
+    
+class comment_reply_delete_model(BaseModel):
+    id:str

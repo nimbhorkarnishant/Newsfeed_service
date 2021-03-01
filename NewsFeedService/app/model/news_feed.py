@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional,List
 from fastapi import FastAPI
 from pydantic import BaseModel,Field
 from uuid import UUID
@@ -14,14 +14,13 @@ from .group import group
 
 
 class News_Feed(BaseModel):
-    id:UUID
     user:User
     isLiked:Optional[bool]=False
     createdAt:datetime
-    group:group 
-    media:Optional[list]=[]
+    group:Optional[dict]={}
+    media:Optional[List[media]]
     description:Optional[str]
-    taggedCoWorkers:Optional[list]=[]
+    taggedCoWorkers:Optional[List[taggedCoWorkers]]
     totalComments:Optional[int]=0
     likes:Optional[list]=[]
     totallikes:Optional[int]=0
@@ -32,7 +31,7 @@ class Response_News_Feed(BaseModel):
     user:User
     isLiked:Optional[bool]=False
     createdAt:datetime
-    group:group 
+    group:Optional[dict]={} 
     media:Optional[list]=[]
     description:Optional[str]
     taggedCoWorkers:Optional[list]=[]

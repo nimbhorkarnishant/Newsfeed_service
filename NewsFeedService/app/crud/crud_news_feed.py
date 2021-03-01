@@ -4,7 +4,7 @@ from ..core.config import database_name, newsfeed_collection
 
 async def read_db_sort_desc(db):
     try:
-        data= db[database_name][newsfeed_collection].find().sort('createdAt',-1)
+        data= db[database_name][newsfeed_collection].find().sort('createdAt',1)
         return data
     except:
         return False
