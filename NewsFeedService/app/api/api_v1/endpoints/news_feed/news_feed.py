@@ -8,12 +8,40 @@ from fastapi_pagination import PaginationParams, Page
 from fastapi_pagination.paginator import paginate
 from .....crud.crud_news_feed import *
 import uuid
+import pickle
+
+from .....redis_cache.news_feed import *
 
 router = APIRouter()
+
 
 def generate_uuid():
     _id=uuid.uuid4()
     return str(_id)
+
+@router.get("/tetsing_cache/{user_id}",tags=["Post"])
+async def testing_cache(user_id:str,params: PaginationParams = Depends(),db: AsyncIOMotorClient = Depends(get_database)):
+    try:
+        ########### checking data in cache
+        data_cache=get_cache_data(user_id)       
+        if (data_cache):
+            ############# returning from cache
+            return {"status_code":200,"message":"Success","Extra_message":"Data Coming From cache","Data":paginate(pickle.loads(data_cache),params)}
+        else:
+            posts=[]
+            data=await read_db_sort_desc(db)
+            if (data):
+                async for document in data:
+                    posts.append(Response_News_Feed(**document))
+                ################# converting to string
+                c_data=pickle.dumps(posts)
+                ############ adding data to cache
+                set_cache_data(user_id,1200,c_data)
+                return {"status_code":200,"message":"Success","Extra_message":"Data Coming From DB","Data":paginate(posts,params)}
+            else:
+                return {"status_code":400,"message":"Error","Extra_message":"DB Operation Issues"}
+    except:
+        return {"status_code":500,"message":"Error","Extra_message":"Internal API Level Issues"}
 
 
 
@@ -28,6 +56,7 @@ async def News_Feed(post_data:News_Feed,db: AsyncIOMotorClient = Depends(get_dat
                 media[i]['id']=generate_uuid()
         data=await post_db(db,json_data)
         if data:
+            delete_cache_data(json_data['user']['id'])
             return {"status_code":200,"message":"Success","Extra_message":"Post Added Successfully","post_id":json_data['id']}
         else:
             return {"status_code":400,"message":"Error","Extra_message":"DB Operation Issues"}
