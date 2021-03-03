@@ -3,9 +3,9 @@ import requests
 import pytest
 
 data_post=[
-    ('b8ef27f3-643b-4876-9cfa-b4984d565f86',
+    ("9f28de3f-33e9-4a59-a33b-12f52e41e93c",
      {
-        "id": "string",
+        "id": "1456",
         "profileImg": "string",
         "firstName": "string",
         "lastName": "string"
@@ -16,7 +16,7 @@ data_post=[
 ]
 
 data_delete=[
-    ('b8ef27f3-643b-4876-9cfa-b4984d565f86',{"id": "1"},200)
+    ("9f28de3f-33e9-4a59-a33b-12f52e41e93c",{"id": "1456"},200)
 ]
 
 
@@ -24,7 +24,8 @@ data_delete=[
 def test_Like(post_id,json_data,status):
     assert len(post_id)!=0
     url="http://127.0.0.1:8000/api/like/"+post_id
-    response=requests.post(url, data =json_data)
+    response=requests.put(url, json =json_data)
+    assert response.json()['status_code']==200
     assert response.status_code==status
     
     
@@ -33,5 +34,6 @@ def test_Like(post_id,json_data,status):
 def test_Dislike(post_id,json_data,status):
     assert len(post_id)!=0
     url="http://127.0.0.1:8000/api/dislike/"+post_id
-    response=requests.post(url, data =json_data,)
+    response=requests.delete(url, json =json_data)
+    assert response.json()['status_code']==200
     assert response.status_code==status

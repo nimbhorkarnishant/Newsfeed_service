@@ -43,7 +43,7 @@ async def Read_News_Feed(params: PaginationParams = Depends(),db: AsyncIOMotorCl
         if (data):
             async for document in data:
                 posts.append(Response_News_Feed(**document))
-            return {"status_code":200,"message":"Success","Extra_message":"Data Coming From DB","posts":paginate(posts,params)}
+            return {"status_code":200,"message":"Success","Extra_message":"Data Coming From DB","Data":paginate(posts,params)}
         else:
             return {"status_code":400,"message":"Error","Extra_message":"DB Operation Issues"}
     except:
